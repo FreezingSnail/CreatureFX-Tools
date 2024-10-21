@@ -1,0 +1,13 @@
+.hover-border:hover {
+  border-color: #71767a; /* Change border color on hover */
+}
+
+.hover-wrap {
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-wrap:hover {
+  background-color: #e0e0e0; /* Change background on hover */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}

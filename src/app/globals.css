@@ -26,5 +26,9 @@ body {
   }
 }
 
+.hover-border:hover {
+  border-color: #4caf50; /* Change border color on hover */
+}
+
 
 

@@ -35,23 +35,25 @@ const CreatureData: React.FC<CreatureIDProps> = ({ creatureID }) => {
               <thead>
                 <tr>
                   {headers.map((header, index) => (
-                    <th key={index}>{header}</th> // Render each string as a <th>
+                    <th key={header}>{header}</th> // Render each string as a <th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <td><TileImage tileIndex={creatureID} /></td>
-                <td>{data[creatureID].id}</td>
-                <td>{data[creatureID].name}</td>
-                <td>{data[creatureID].type1}</td>
-                <td>{data[creatureID].type2}</td>
-                <td>{data[creatureID].evelevel}</td>
-                <td>{data[creatureID].atk}</td>
-                <td>{data[creatureID].deff}</td>
-                <td>{data[creatureID].spcatk}</td>
-                <td>{data[creatureID].spcdef}</td>
-                <td>{data[creatureID].hp}</td>
-                <td>{data[creatureID].spd}</td>
+                <tr>
+                  <td><TileImage tileIndex={creatureID} /></td>
+                  <td>{data[creatureID].id}</td>
+                  <td>{data[creatureID].name}</td>
+                  <td>{data[creatureID].type1}</td>
+                  <td>{data[creatureID].type2}</td>
+                  <td>{data[creatureID].evelevel}</td>
+                  <td>{data[creatureID].atk}</td>
+                  <td>{data[creatureID].deff}</td>
+                  <td>{data[creatureID].spcatk}</td>
+                  <td>{data[creatureID].spcdef}</td>
+                  <td>{data[creatureID].hp}</td>
+                  <td>{data[creatureID].spd}</td>
+                </tr>
               </tbody>
             </table>
           </div>

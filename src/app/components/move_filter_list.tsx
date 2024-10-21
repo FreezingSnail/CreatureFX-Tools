@@ -1,48 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import MoveData from "./moves";
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { Move } from "../features/moves";
 import { Trie } from "../src/prefix";
+import './components.css';
+import HoverDiv from './hover_div';
 
-interface MoveFilterListProps { };
+interface MoveFilterListProps {
+  availableMoves: Move[];
+};
 
 
 
 
-const MoveFilterList: React.FC<MoveFilterListProps> = ({ }) => {
-  const data: Move[] = useSelector((state: RootState) => state.moveData.value);
+const MoveFilterList: React.FC<MoveFilterListProps> = ({ availableMoves }) => {
 
   const [moveTrie] = useState(new Trie());
   const [filteredMoves, setFilteredMoves] = useState<Move[]>([]);
-  const [moveList, setLocalMoveList] = useState<Move[]>([]);
   const [searchTermMoves, setSearchTermMoves] = useState('');
+  const [localMoveList, setlocalMoveList] = useState<Move[]>([]);
+
+  // First useEffect: Initialize localMoveList and moveTrie only once on page load
+  useEffect(() => {
+    setlocalMoveList(availableMoves); // Assuming availableMoves is a global or passed prop
+    availableMoves.forEach((move) => {
+      moveTrie.insert(move.name.toLowerCase()); // Insert move names into the moveTrie
+    });
+    setFilteredMoves(availableMoves); // Set initial moves to display the full list
+  }, []);
 
   useEffect(() => {
-    setLocalMoveList(data); // Dispatch the list to Redux
-    data.forEach((move) => {
-      moveTrie.insert(move.name.toLowerCase())
-    })
-  });
 
-  useEffect(() => {
-    console.log("searchTerm? ", searchTermMoves)
-    if (searchTermMoves === '') {
-      console.log("using full list")
-      setFilteredMoves(moveList); // If input is empty, show all creatures
-    } else {
-      const matchedMoveNames = moveTrie.getAllWordsWithPrefix(searchTermMoves.toLowerCase());
-      const filtered = moveList.filter(move =>
-        matchedMoveNames.includes(move.name.toLowerCase())
-      );
-      setFilteredMoves(filtered);
-
-      console.log("filtered Moves: ", filtered)
+    if (localMoveList.length > 0) {
+      if (searchTermMoves == '') {
+        setFilteredMoves(localMoveList); // If input is empty, show all creatures
+      } else {
+        const matchedMoveNames = moveTrie.getAllWordsWithPrefix(searchTermMoves.toLowerCase());
+        const filtered = localMoveList.filter(move =>
+          matchedMoveNames.includes(move.name.toLowerCase())
+        );
+        setFilteredMoves(filtered);
+      }
 
     }
 
   }, [searchTermMoves, moveTrie]);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTermMoves(event.target.value);
+  };
+
+  const [hovered, setHovered] = useState(false);
 
 
   return (
@@ -51,10 +61,14 @@ const MoveFilterList: React.FC<MoveFilterListProps> = ({ }) => {
         type="text"
         placeholder="Search moves..."
         value={searchTermMoves}
-        onChange={(m) => setSearchTermMoves(m.target.value)}
+        onChange={handleInputChange}
       />
-      {filteredMoves.map((m, _) => (
-        <MoveData moveID={m.id} />
+
+      {filteredMoves.length > 0 && filteredMoves.map((m, _) => (
+        <HoverDiv key={m.id}>
+          <MoveData moveID={m.id} key={m.id} />
+        </HoverDiv>
+
       ))}
     </div>
   );

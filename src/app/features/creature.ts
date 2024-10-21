@@ -18,7 +18,7 @@ export interface Creature {
   spcdef: number;
   hp: number;
   spd: number;
-  movelist: Move[];
+  moveList: Move[];
   move1: number;
   move2: number;
   move3: number;

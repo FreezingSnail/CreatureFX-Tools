@@ -23,8 +23,7 @@ const MoveData: React.FC<MoveIDProps> = ({ moveID }) => {
 
   return (
     <div>
-      <h1>JSON Data</h1>
-      <pre>{JSON.stringify(data[moveID], null, 2)}</pre>
+      {JSON.stringify(data[moveID], null, 2)}
     </div>
   );
 };

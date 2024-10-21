@@ -1,11 +1,10 @@
 'use client'
-import MoveFilterList from "./components/move_filter_list"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCreatureList, Creature } from './features/creature';
 import { setMoveList, Move } from "./features/moves";
 import { AppDispatch } from './store'; // Import the dispatch type
-import CreatureFilterList from "./components/creature_filter_list";
+import CreatureBuilder from './components/creature_builder';
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use the typed dispatch
@@ -35,13 +34,28 @@ const App: React.FC = () => {
 
 
 
+  const [id, setID] = useState('');
+  // Function to handle input changes
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setID(event.target.value);
+  };
+
+  // Function to validate if the input is between 1 and 31
+  const isValidInput = (value: string): boolean => {
+    const num = Number(value);
+    return num >= 1 && num <= 31;
+  };
 
 
   return (
     <div>
+      <input
+        type="number"
+        value={id}
+        onChange={handleInputChange}
+        placeholder="Enter a number" />
       <main className="flex-col ">
-        <CreatureFilterList />
-        <MoveFilterList />
+        {isValidInput(id) && <CreatureBuilder creatureID={Number(id)} />}
       </main>
     </div>
   );
